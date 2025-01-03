@@ -11,6 +11,11 @@ const routes: Array<RouteConfig> = [
     component: HomeView,
   },
   {
+    path: "/formEdit",
+    name: "formEdit",
+    component: () => import("../views/FormEdit.vue"),
+  },
+  {
     path: "/about",
     name: "about",
     // route level code-splitting
