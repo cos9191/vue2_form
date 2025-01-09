@@ -96,6 +96,20 @@
 }
 
 // Позиционирование
+.d-flex {
+    display: flex;
+}
+.flex-column {
+    flex-direction: column;
+}
+.gap-1 {
+    gap: 1rem;
+}
 .align-self-start {
     align-self: flex-start;
+}
+
+// Сброс стилей списка
+.list-style-none {
+    list-style: none;
 }

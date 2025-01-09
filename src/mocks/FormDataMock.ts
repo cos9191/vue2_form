@@ -1,6 +1,6 @@
 import { Contract } from "@/types/ContractTypes";
 
-export const formDataMock: Contract = {
+export const contractMock1: Contract = {
   title: "Открыть договор",
   controls: [
     {
@@ -58,11 +58,73 @@ export const formDataMock: Contract = {
       required: "true",
       type: "text",
     },
+  ],
+  submitUrl: "/api/submitForm",
+};
+
+export const contractMock2: Contract = {
+  title: "Открыть договор",
+  controls: [
     {
-      id: "5927943497",
+      id: "5927943481",
+      control: "FORM",
+      caption: "Кредитный договор",
+      parentID: "",
+      tabIndex: 0,
+      position: 0,
+    },
+    {
+      id: "5927943482",
+      control: "TEXT",
+      caption: "Кредит",
+      parentID: "5927943481",
+      tabIndex: 1,
+      position: 2,
+      type: "text",
+      required: "true",
+    },
+    {
+      id: "5927943483",
+      control: "BUTTON",
+      caption: "OK",
+      parentID: "5927943481",
+      tabIndex: 4,
+      position: 4,
+      type: "button",
+    },
+    {
+      id: "5927943484",
+      control: "BUTTON",
+      caption: "Отмена",
+      parentID: "5927943481",
+      tabIndex: 5,
+      position: 5,
+      type: "button",
+    },
+    {
+      id: "5927943495",
+      control: "LABEL",
+      caption: "Вид кредита",
+      parentID: "5927943482",
+      tabIndex: -1,
+      position: 1,
+      type: "label",
+    },
+    {
+      id: "5927943486",
+      control: "TEXT",
+      caption: "Финансовый продукт",
+      parentID: "5927943481",
+      tabIndex: 6,
+      position: 3,
+      required: "true",
+      type: "text",
+    },
+    {
+      id: "5927943487",
       control: "TEXT",
       caption: "Комментарий",
-      parentID: "5927943491",
+      parentID: "5927943481",
       tabIndex: 7,
       position: 4,
       type: "text",
