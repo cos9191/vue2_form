@@ -1,0 +1,101 @@
+// Кнопки
+.btn {
+    display: inline-block;
+    padding: 6px 12px 5px 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    &:hover {
+        background-color: #0056b3;
+    }
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+    }
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+.btn-positive {
+    background-color: #73c68b;
+    &:hover {
+        background-color: #218838;
+    }
+}
+
+.btn-neutral {
+    background-color: #acacac;
+    &:hover {
+        background-color: #5a6268;
+    }
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    &:hover {
+        background-color: #c82333;
+    }
+}
+
+// Поля ввода
+.input {
+    width: 90%;
+    padding: 8px 14px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    &::placeholder {
+        color: #aaa;
+        font-style: italic;
+    }
+    &:hover{
+         border-color: #007bff !important;
+    }
+    &:disabled {
+        background-color: #f8f9fa;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    &:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+    }
+    &:required {
+        border-color: orange;
+    }
+    &:required:valid {
+        border-color: green;
+    }
+}
+
+// Разделители
+.border-bottom {
+    border-bottom: 1px solid #ddd;
+}
+
+// Отступы
+.mt-1 {
+    margin-top: 1rem;
+}
+.pt-1 {
+    padding-top: 1rem;
+}
+.pb-1 {
+    padding-bottom: 1rem;
+}
+
+// Позиционирование
+.align-self-start {
+    align-self: flex-start;
+}

@@ -1,15 +1,16 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/formEdit">Form</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Главная</router-link> |
+      <router-link to="/contracts">Договора</router-link>
     </nav>
     <router-view />
   </div>
 </template>
 
 <style lang="scss">
+@import "@/assets/styles/index.scss";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -30,5 +31,8 @@ nav {
     }
   }
 }
+
+@view-transition {
+  navigation: auto;
+}
 </style>
-<script setup lang="ts"></script>

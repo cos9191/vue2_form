@@ -1,19 +1,6 @@
-export interface editContractType {
-  title: string;
-  controls: Array<{
-    id: string;
-    control: string;
-    caption: string;
-    parentID: string;
-    tabIndex: number;
-    position: number;
-    type?: string;
-    required?: string;
-  }>;
-  submitUrl: string;
-}
+import { Contract } from "@/types/ContractTypes";
 
-export const formEditMock: editContractType = {
+export const formDataMock: Contract = {
   title: "Открыть договор",
   controls: [
     {
@@ -69,6 +56,15 @@ export const formEditMock: editContractType = {
       tabIndex: 6,
       position: 3,
       required: "true",
+      type: "text",
+    },
+    {
+      id: "5927943497",
+      control: "TEXT",
+      caption: "Комментарий",
+      parentID: "5927943491",
+      tabIndex: 7,
+      position: 4,
       type: "text",
     },
   ],
