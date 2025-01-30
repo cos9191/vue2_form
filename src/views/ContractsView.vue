@@ -2,68 +2,94 @@
   <div>
     <Loader v-if="isLoading" text="Загрузка данных..." />
     <ul v-else class="d-flex flex-column gap-1 list-style-none">
-      <li>
-        <button @click="openContract(contractMock1())" class="btn btn-neutral">
-          Договор №1 (Из ТЗ)
-        </button>
-      </li>
-      <li>
-        <button @click="openContract(contractMock2())" class="btn btn-neutral">
-          Договор №2
+      <li v-for="(contract, index) in contracts()" :key="index">
+        <button @click="openModal(index)" class="btn btn-neutral">
+          {{ contract?.controls?.[0]?.caption }}
         </button>
       </li>
     </ul>
 
-    <!-- Модальное окно -->
     <Modal :visible="showModal" @close="closeModal">
       <form @submit.prevent="submitHandler" ref="formRef">
         <div class="modal-content-wrapper">
-          <h3>{{ formEditData?.title }}</h3>
+          <h3>{{ contractStore?.form?.controls?.[0]?.caption }}</h3>
           <template v-for="(item, index) in contractStore.form.controls">
             <div
-              v-if="!isBtn(item) && item.control !== 'FORM'"
-              class="modal-content-wrapper border-bottom pt-1 pb-1"
+              v-if="!isBtn(item) && item?.control !== 'FORM'"
+              class="modal-content-wrapper pt-1"
               :key="index"
+              :class="{ 'border-bottom pb-1': item?.control !== 'LABEL' }"
             >
               <label
-                v-if="item.control === 'LABEL'"
-                :for="item.parentID"
-                class="align-self-start pb-1"
+                v-if="item?.control === 'LABEL' && item.show !== false"
+                :for="item?.parentID"
+                class="align-self-start"
               >
-                {{ item.caption }}
+                {{ item?.caption }}
               </label>
               <input
-                v-else-if="item.control === 'TEXT'"
-                :id="item.id"
+                v-else-if="item?.control === 'TEXT' && item.show !== false"
+                :id="item?.id"
                 type="text"
                 :key="index"
-                :value="formValues[item.id]"
-                :placeholder="item.caption"
-                :required="item.required === 'true'"
+                :value="contractStore?.form[item?.id]"
+                :placeholder="item?.caption"
+                :required="item?.required === 'true'"
                 class="input"
+                @input="inputValueHandle(item.id, $event)"
               />
+              <textarea
+                v-else-if="item?.control === 'TEXTAREA' && item.show !== false"
+                :id="item?.id"
+                :key="index"
+                :value="contractStore?.form[item?.id]"
+                :placeholder="item?.caption"
+                :required="item?.required === 'true'"
+                class="input"
+                @input="inputValueHandle(item.id, $event)"
+              />
+              <input
+                v-else-if="item?.control === 'CHECKBOX' && item.show !== false"
+                :id="item?.id"
+                type="checkbox"
+                :key="index"
+                :value="contractStore?.form[item?.id]"
+                :placeholder="item?.caption"
+                :required="item?.required === 'true'"
+                class="input"
+                @input="inputValueHandle(item.id, $event)"
+              />
+              <fieldset
+                v-else-if="
+                  item?.control === 'RADIOBUTTON' && item.show !== false
+                "
+              >
+                <div>
+                  <input type="radio" name="drone" :value="item?.caption" />
+                  <label>{{ item?.caption }}</label>
+                </div>
+              </fieldset>
             </div>
           </template>
         </div>
         <div class="modal-footer">
-          <template v-for="(item, index) in contractStore.form.controls">
+          <template v-for="(item, index) in contractStore?.form?.controls">
             <button
               v-if="isSubmit(item)"
-              @click="submitHandler"
               :key="index"
               class="btn btn-positive"
               type="submit"
             >
-              OK
+              {{ item.caption }}
             </button>
             <button
-              v-if="item.caption === 'Отмена'"
+              v-if="item?.caption === 'Отмена'"
               @click="closeModal"
               :key="index"
               class="btn btn-neutral"
               type="button"
             >
-              Отмена
+              {{ item.caption }}
             </button>
           </template>
         </div>
@@ -74,52 +100,29 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { contractMock1, contractMock2 } from "@/mocks/FormDataMock";
+import { contracts } from "@/mocks/FormDataMock";
 import Loader from "@/components/utils/Loader.vue";
 import Modal from "@/components/utils/Modal.vue";
 import { BTN, SUBMIT } from "@/composables/useConst";
-import { Contract, Control, ControlParent } from "@/types/ContractTypes";
+import { Control } from "@/types/ContractTypes";
 import { ContractStore, mutations } from "@/store/ContractStore";
 
 @Component({
-  methods: {
-    contractMock2() {
-      return contractMock2;
-    },
-    contractMock1() {
-      return contractMock1;
-    },
-  },
   components: {
     Loader,
     Modal,
   },
 })
 export default class ContractsView extends Vue {
-  formEditData: Contract | null = null;
   isLoading = true;
   showModal = false;
-  formValues: Record<string, string> = {};
 
-  contractMock1() {
-    return contractMock1;
-  }
-  contractMock2() {
-    return contractMock2;
+  contracts() {
+    return contracts;
   }
 
   get contractStore() {
     return ContractStore;
-  }
-  initForm() {
-    // resetContract()
-    mutations.resetContract();
-    this.formValues = {};
-    this.contractStore.form.controls.forEach((control: Control) => {
-      if (control.control === "TEXT") {
-        this.formValues[control.id] = "";
-      }
-    });
   }
 
   isSubmit(control: Control): boolean {
@@ -129,8 +132,8 @@ export default class ContractsView extends Vue {
     return control.control === BTN;
   }
 
-  openContract(contract: Contract): void {
-    mutations.setContract(contract);
+  openModal(id: number): void {
+    mutations.initContract(contracts[id]);
     this.showModal = true;
   }
   closeModal(): void {
@@ -140,45 +143,19 @@ export default class ContractsView extends Vue {
   submitHandler(): void {
     const form = this.$refs.formRef as HTMLFormElement;
     if (form.checkValidity()) {
-      console.log("Form submitted:", this.formEditData);
+      console.log("Form submitted:", ContractStore.form);
       this.showModal = false;
     }
   }
 
+  inputValueHandle(id: number, e: InputEvent): void {
+    mutations.updateContract(
+      id.toString(),
+      (e.target as HTMLInputElement)?.value
+    );
+  }
+
   mounted() {
-    // this.formEditData = contractMock1;
-    // this.formEditData.controls.sort((a, b) => a.position - b.position);
-    // this.formEditData.controls = this.formEditData.controls.reduce(
-    //   (updatedControls, controlChild: Control) => {
-    //     if (
-    //       this.formEditData &&
-    //       controlChild.parentID !== this.formEditData.controls[0]?.id
-    //     ) {
-    //       const parent: ControlParent | undefined =
-    //         this.formEditData.controls.find(
-    //           (controlParent: Control) =>
-    //             controlParent.id === controlChild.parentID
-    //         );
-    //       if (parent) {
-    //         if (!parent.childs) {
-    //           parent.childs = [];
-    //         }
-    //         if (parent.childs[0]?.id !== controlChild.id) {
-    //           parent.childs.push(controlChild);
-    //         }
-    //         return updatedControls;
-    //       }
-    //     }
-    //     updatedControls.push(controlChild);
-    //     return updatedControls;
-    //   },
-    //   [] as Control[]
-    // );
-    // console.log("mounted", this.formEditData.controls);
-    this.initForm();
-    // console.log("Store:", this.contractStore.form.controls);
-    localStorage.setItem("contract", JSON.stringify(ContractStore.form));
-    console.log(localStorage.getItem("contract"));
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);

@@ -64,7 +64,7 @@ export default class Modal extends Vue {
   align-items: center;
   z-index: 1000;
   opacity: 1;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.1s ease;
 }
 
 // Содержимое
@@ -75,7 +75,7 @@ export default class Modal extends Vue {
   position: relative;
   min-width: 300px;
   opacity: 1;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 // Кнопка закрыть
@@ -103,7 +103,7 @@ export default class Modal extends Vue {
 // Анимации
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
   opacity: 1;
 }
 .modal-enter,
@@ -112,11 +112,11 @@ export default class Modal extends Vue {
 }
 .modal-enter-active .modal-content {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(-50px);
 }
 .modal-leave-to .modal-content {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(-50px);
 }
 .modal-leave-active .modal-content {
   opacity: 0;

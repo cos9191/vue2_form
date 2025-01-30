@@ -1,3 +1,7 @@
+body {
+    margin: 0;
+}
+
 // Кнопки
 .btn {
     display: inline-block;
@@ -112,4 +116,5 @@
 // Сброс стилей списка
 .list-style-none {
     list-style: none;
+    padding-left: 0;
 }

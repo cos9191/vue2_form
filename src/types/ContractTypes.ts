@@ -13,6 +13,8 @@ export interface Control {
   position: number;
   type?: string;
   required?: string;
+  show?: boolean;
+  unlocks?: number;
 }
 
 export interface ControlParent extends Control {
